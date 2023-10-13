@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deployment #The name of the Kubernetes Deployment to be created in the Kubernetes cluster
+  name: deployment 
   labels:
     app: node-app
 spec:
-  replicas: 2 #The number of pods to be created in the Kubernetes cluster for the React.js application container
+  replicas: 2 
   selector:
     matchLabels:
       app: node-app
@@ -15,7 +15,7 @@ spec:
         app: node-app 
     spec:
       containers:
-      - name: node-app #The name of the react.js application container
+      - name: node-app 
         image: registry.furkanbilgin.com/hello-world:17 #The Docker image for building the node.js application container
         ports:
         - containerPort: 3000 #The port for the node.js application   container
