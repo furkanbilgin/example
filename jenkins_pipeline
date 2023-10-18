@@ -23,6 +23,7 @@ pipeline {
                 script {
                     // Build the Docker image
                     dockerImage = docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}")
+                    dockerImageLatest = docker.build("${DOCKER_IMAGE_NAME}:latest")
 
                     // Optionally, you can add more build configurations here
                 }
@@ -35,6 +36,7 @@ pipeline {
                     // Push the Docker image to the registry
                     docker.withRegistry("${DOCKER_REGISTRY}", 'registry') {
                         dockerImage.push()
+                        dockerImageLatest.push()
                     }
                 }
             }
@@ -47,16 +49,19 @@ pipeline {
 				sshagent(['kubernetesmaster'])
 				{
 					sh 'scp -r -o StrictHostKeyChecking=no deployment.yaml azureuser@74.234.185.151:/home/azureuser/path'
-				}
 				
-				script{
-						try{
-							sh 'ssh azureuser@74.234.185.151 kubectl apply -f /home/azureuser/path/deployment.yaml --kubeconfig=/root/.kube/config'
-							}catch(error)
-							{
-                                echo 'Error-FB: ' + error.toString()
-							}
-					}
+                    script{
+                            try{
+                                // sadece bir kez secret vermemiz yeterli olacak, sonraki tetiklemelerde bu satırı yorum satırına çevirelim.
+				// sh 'ssh azureuser@74.234.185.151 kubectl create secret docker-registry image-pull-secret  --docker-username=furkanbilgin --docker-password=1234  --docker-server=registry.furkanbilgin.com'
+                                sh 'ssh azureuser@74.234.185.151 kubectl apply -f /home/azureuser/path/deployment.yaml --kubeconfig=/home/azureuser/.kube/config'
+
+                                }catch(error)
+                                {
+                                    echo 'Kubectl apply error: ' + error.toString()
+                                }
+                        }
+                }
 			}
 		}
         
@@ -66,7 +71,8 @@ pipeline {
     post {
         success {
             // Clean up: Remove the local Docker image
-            sh "docker rmi ${DOCKER_REGISTRY}${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
+            sh 'docker rmi ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}'
+             sh 'docker rmi ${DOCKER_IMAGE_NAME}:latest'
         }
     }
 }
