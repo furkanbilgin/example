@@ -50,6 +50,12 @@ cd /etc/nginx/sites-available/default
 copy from here >  https://github.com/furkanbilgin/example/blob/main/nginx_conf
 # edit nginx conf
 
+# Increase nginx file upload size for images 
+cd /etc/nginx
+nano nginx.conf
+update client_max_body_size 2G;
+# Increase nginx file upload size for images
+
 
 #Create Registry Directories and write registry compose
 mkdir -p docker-registry/{data} 
