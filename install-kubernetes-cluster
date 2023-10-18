@@ -1,0 +1,134 @@
+
+sudo hostnamectl set-hostname "*master*.furkanbilgin.com" SERVER1 - kubernetes master node 
+sudo hostnamectl set-hostname "*node*.furkanbilgin.com" SERVER2 - kubernetes worker node
+sudo hostnamectl set-hostname "*registry*.furkanbilgin.com" SERVER3
+
+# update-upgrade for all server
+sudo apt-get update -y && sudo apt-get upgrade -y
+# update-upgrade for all server
+
+# Disable swap for master-worker
+sudo swapoff -a
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+# Disable swap for master-worker
+
+# Add kernel Parameters for master-worker
+sudo tee /etc/modules-load.d/containerd.conf <<EOF
+overlay
+br_netfilter
+EOF
+sudo modprobe overlay  && sudo modprobe br_netfilter
+
+sudo tee /etc/sysctl.d/kubernetes.conf <<EOF
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+net.ipv4.ip_forward = 1
+EOF 
+# Add kernel Parameters for master-worker
+
+# reload sysctl for master-worker
+sudo sysctl --system
+# reload sysctl for master-worker
+
+# install containerd Runtime for master-worker
+sudo apt install -y curl gnupg2 software-properties-common apt-transport-https ca-certificates
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/docker.gpg 
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt update -y 
+sudo apt install -y containerd.io
+containerd config default | sudo tee /etc/containerd/config.toml >/dev/null 2>&1
+sudo sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
+sudo systemctl restart containerd
+sudo systemctl enable containerd
+sudo systemctl status containerd
+# install containerd Runtime for master-worker
+
+
+# install  kubelet kubeadm kubectl for master-worker
+
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update -y
+sudo apt-get install -y kubelet kubeadm kubectl  && sudo apt-mark hold kubelet kubeadm kubectl
+sudo systemctl enable --now kubelet && sudo systemctl status kubelet 
+
+# install  kubelet kubeadm kubectl for master-worker
+
+# edit host files on worker and master
+74.234.185.151   k8smaster.furkanbilgin.com
+74.234.200.151  k8snode1.furkanbilgin.com
+ # edit host files on worker and master
+
+
+#  Initialize Kubernetes Cluster with Kubeadm run master node only
+sudo kubeadm init --control-plane-endpoint=k8smaster.furkanbilgin.com
+#  Initialize Kubernetes Cluster with Kubeadm run master node only
+
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+You can now join any number of control-plane nodes by copying certificate authorities
+and service account keys on each node and then running the following as root:
+
+  kubeadm join k8smaster.furkanbilgin.com:6443 --token mxwa8k.gyp4dynzy24gtll8 \
+        --discovery-token-ca-cert-hash sha256:589a6c0d6f24c88b81a8a71eea6d47e92ea7ffeae571651f110cd34b35dd0d54 \
+        --control-plane
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join k8smaster.furkanbilgin.com:6443 --token mxwa8k.gyp4dynzy24gtll8 \
+        --discovery-token-ca-cert-hash sha256:589a6c0d6f24c88b81a8a71eea6d47e92ea7ffeae571651f110cd34b35dd0d54
+
+
+# run on master node only
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+kubectl cluster-info
+kubectl get nodes
+# run on master node only
+
+# allow azure vm network inbound and outbound port 6443,80,8080,443 for master and worker
+# allow azure vm network inbound and outbound port 6443,80,8080,443 for master and worker
+
+# run on worker node
+kubeadm join k8smaster.furkanbilgin.com:6443 --token mxwa8k.gyp4dynzy24gtll8 \
+        --discovery-token-ca-cert-hash sha256:589a6c0d6f24c88b81a8a71eea6d47e92ea7ffeae571651f110cd34b35dd0d54
+# run on worker node
+
+# run on master nodes
+kubectl get nodes
+# run on master nodes
+
+# Install Calico Network Plugin on master
+kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml
+kubectl get pods -n kube-system --watch
+# wait for ready all
+# Install Calico Network Plugin on master
+
+# Install kubecolor 
+wget https://github.com/hidetatz/kubecolor/releases/download/v0.0.25/kubecolor_0.0.25_Linux_x86_64.tar.gz
+tar xvf kubecolor_0.0.25_Linux_x86_64.tar.gz
+chmod +x kubecolor
+alias kubectl="kubecolor"
+apt install kubecolor
+# Install kubecolor
+
+
+74.234.185.151   k8smaster.furkanbilgin.com
+74.234.200.151  k8snode1.furkanbilgin.com
+ 
