@@ -35,5 +35,5 @@ spec:
   ports:
   - protocol: TCP
     port: 4000 #Service port
-    targetPort: 4000 #The port for the node application container
+    targetPort: 3000 #The port for the node application container
  
