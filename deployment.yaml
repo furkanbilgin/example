@@ -36,13 +36,4 @@ spec:
   - protocol: TCP
     port: 3000 #Service port
     targetPort: 3000 #The port for the node application container
-
----
-
-apiVersion: v1
-kind: Secret
-type: kubernetes.io/dockerconfigjson
-metadata:
-  name: image-pull-secret
-data:
-  .dockerconfigjson: {{ "{\"auths\": {\"registry.furkanbilgin.com\": {\"username\": \"furkanbilgin\", \"password\": \"1234\"}}}" | b64enc }}
+ 
