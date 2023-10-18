@@ -1,0 +1,72 @@
+pipeline {
+    agent any
+
+    environment {
+        // Set environment variables for Docker
+        DOCKER_REGISTRY = 'https://registry.furkanbilgin.com/v2/'
+        DOCKER_IMAGE_NAME = 'hello-world'
+        DOCKER_IMAGE_TAG = "${env.BUILD_NUMBER}"
+    }
+
+    stages {
+         stage('Checkout') {
+            steps {
+                // Manually checkout your Git repository
+                script {
+                    git branch: 'main', url: 'https://github.com/furkanbilgin/example.git'
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build the Docker image
+                    dockerImage = docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}")
+
+                    // Optionally, you can add more build configurations here
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    // Push the Docker image to the registry
+                    docker.withRegistry("${DOCKER_REGISTRY}", 'registry') {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+        
+        
+        stage('Deploy to kubernetes')
+		{
+			steps{
+				sshagent(['kubernetesmaster'])
+				{
+					sh 'scp -r -o StrictHostKeyChecking=no deployment.yaml azureuser@74.234.185.151:/home/azureuser/path'
+				}
+				
+				script{
+						try{
+							sh 'ssh azureuser@74.234.185.151 kubectl apply -f /home/azureuser/path/deployment.yaml --kubeconfig=/root/.kube/config'
+							}catch(error)
+							{
+                                echo 'Error-FB: ' + error.toString()
+							}
+					}
+			}
+		}
+        
+        
+    }
+
+    post {
+        success {
+            // Clean up: Remove the local Docker image
+            sh "docker rmi ${DOCKER_REGISTRY}${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
+        }
+    }
+}
