@@ -12,8 +12,7 @@ Server 1 ve 2 Kurulumu için [bu dosyadaki](https://github.com/furkanbilgin/exam
 
 Jenkins kurulumu için [bu docker compose](https://github.com/furkanbilgin/example/blob/main/docker-compose.yml_for_jenkins) dosyasını kullanalım
 
-
-Jenkins kurulumu sonrası projemizi kubernetese göndermemiz için gereken [Pipeline](https://github.com/furkanbilgin/example/blob/4450d432cf22463563e4eecbc59acfc005562be9/jenkins_pipeline)
+Jenkins kurulumu sonrası projemizi kubernetese göndermemiz için bu [Pipeline](https://github.com/furkanbilgin/example/blob/4450d432cf22463563e4eecbc59acfc005562be9/jenkins_pipeline) ihtiyacımız olacak.
 
 
 # Private Docker Registry Kurulumu
