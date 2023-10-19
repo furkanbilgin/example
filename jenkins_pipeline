@@ -70,7 +70,7 @@ pipeline {
 
     post {
         success {
-            // Clean up: Remove the local Docker image
+            // Clean up: Remove the local Docker image in server3
             sh 'docker rmi ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}'
              sh 'docker rmi ${DOCKER_IMAGE_NAME}:latest'
         }
