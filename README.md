@@ -12,6 +12,8 @@ Server 1 ve 2 Kurulumu için [bu dosyadaki](https://github.com/furkanbilgin/exam
 
 Jenkins kurulumu için [bu docker compose](https://github.com/furkanbilgin/example/blob/main/docker-compose.yml_for_jenkins) dosyasını kullanalım
 
+<img width="1466" alt="image" src="https://github.com/furkanbilgin/example/assets/57253957/421f48f7-35a2-416a-b92b-9c6e60fc90e2">
+
 Jenkins kurulumu sonrası projemizi kubernetese göndermemiz için bu [Pipeline](https://github.com/furkanbilgin/example/blob/4450d432cf22463563e4eecbc59acfc005562be9/jenkins_pipeline) ihtiyacımız olacak.
 
 
