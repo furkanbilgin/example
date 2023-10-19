@@ -19,4 +19,14 @@ Jenkins kurulumu sonrası projemizi kubernetese göndermemiz için bu [Pipeline]
 
 Private Docker Registry kurulumu için [bu docker compose](https://github.com/furkanbilgin/example/blob/main/docker-compose.yml%20for%20docker%20registry) dosyasını kullanalım
 
+# Node.js ile "hello world" uygulması 
+
+Dockerize etmemiz için gereken Docker file kodumuz [bu şekildedir.](https://github.com/furkanbilgin/example/blob/main/Dockerfile)
+Hello world sayfamızın [kodlarına erişmek için](https://github.com/furkanbilgin/example/blob/main/server.js)
+
+# Web projesine erişim için 
+http://74.234.200.151:30007/
+
+
+
 
