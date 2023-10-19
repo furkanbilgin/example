@@ -26,8 +26,11 @@ Dockerize etmemiz için gereken Docker file kodumuz [bu şekildedir.](https://gi
 Hello world sayfamızın [kodlarına erişmek için](https://github.com/furkanbilgin/example/blob/main/server.js)
 
 # Web projesine erişim için 
+
 http://74.234.200.151:30007/
 
+Bir sonraki aşamada NGINX Ingress Controller kurarak istekleri 80 portundan alıp içeride 300007 portuna yönlendirebiliriz.
+ 
 
 
 
