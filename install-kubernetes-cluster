@@ -102,8 +102,8 @@ kubectl cluster-info
 kubectl get nodes
 # run on master node only
 
-# allow azure vm network inbound and outbound port 6443,80,8080,443 for master and worker
-# allow azure vm network inbound and outbound port 6443,80,8080,443 for master and worker
+# allow azure vm network inbound and outbound port 6443,80,8080,443,30007 for master and worker
+# allow azure vm network inbound and outbound port 6443,80,8080,443,30007 for master and worker
 
 # run on worker node
 kubeadm join k8smaster.furkanbilgin.com:6443 --token mxwa8k.gyp4dynzy24gtll8 \
