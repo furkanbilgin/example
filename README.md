@@ -39,6 +39,7 @@ Bir sonraki aÅŸamada NGINX Ingress Controller kurarak istekleri 80 portundan alÄ
 
 <img width="653" alt="image" src="https://github.com/furkanbilgin/example/assets/57253957/434332f3-80f1-49df-9d80-c968dc93c654">
 
+<img width="373" alt="image" src="https://github.com/furkanbilgin/example/assets/57253957/93ce01aa-c861-4bce-b754-203e075a0ae2">
 
 
 
