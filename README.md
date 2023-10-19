@@ -1,16 +1,23 @@
-Projenin kurulum aşamaları
+# Proje Hakkında
 
-3 ubuntu22.04 server kurulacak.
-Server 1 : Master Node
-Server 2 : Worker Node
-Server 3 : Jenkins + Docker Registry
+Bu projemizde bir kubenetes cluster kuracağız. Server 1 Master Node , Server 2 Worker Node olacaktır.
+Server 3 üzerine docker compose ile docker private registry ve jenkins kuracağız.
+Jenkins ile build ettiğimiz imageleri docker registry üzerinde tutacağız ve yine jenkins ile kubernetes clustera ileteceğiz.
 
-Server 1 ve 2 Kurulumu için bu dosyadaki yönergeleri takip edeceğiz > https://github.com/furkanbilgin/example/blob/main/install-kubernetes-cluster
+# Kubenetes Cluster Kurulumu
 
-Server 3 kurulumu için bu dosyadaki yönergeleri takip edeceğiz > https://github.com/furkanbilgin/example/blob/main/SERVER3_CONF
+Server 1 ve 2 Kurulumu için [bu dosyadaki](https://github.com/furkanbilgin/example/blob/main/install-kubernetes-cluster) yönergeleri takip edeceğiz
 
-Jenkins docker-compose.yml > https://github.com/furkanbilgin/example/blob/main/docker-compose.yml_for_jenkins
+# Jenkins Kurulumu ve Pipeline Yazımı (Docker Compose)
 
-Jenkins pipeline > https://github.com/furkanbilgin/example/blob/4450d432cf22463563e4eecbc59acfc005562be9/jenkins_pipeline
+Jenkins kurulumu için [bu docker compose](https://github.com/furkanbilgin/example/blob/main/docker-compose.yml_for_jenkins) dosyasını kullanalım
 
-Docker Registry docker-compose.yml > https://github.com/furkanbilgin/example/blob/main/docker-compose.yml%20for%20docker%20registry
+
+Jenkins kurulumu sonrası projemizi kubernetese göndermemiz için gereken [Pipeline](https://github.com/furkanbilgin/example/blob/4450d432cf22463563e4eecbc59acfc005562be9/jenkins_pipeline)
+
+
+# Private Docker Registry Kurulumu
+
+Private Docker Registry kurulumu için [bu docker compose](https://github.com/furkanbilgin/example/blob/main/docker-compose.yml%20for%20docker%20registry) dosyasını kullanalım
+
+
