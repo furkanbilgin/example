@@ -36,4 +36,5 @@ spec:
   - protocol: TCP
     port: 3000 #Service port
     targetPort: 3000 #The port for the node application container
+    nodePort: 30007 #The port for the public connection
  
